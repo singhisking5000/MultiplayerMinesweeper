@@ -30,7 +30,7 @@ public class Server
         private int rows = 9;
         private int cols = 9;
 
-        private int[] field = new int[(rows - 1) * (cols - 1)];
+        private int[][] field = new int[rows][cols];
         
         // enum Tile {
         //     SAFE,
@@ -38,23 +38,48 @@ public class Server
         // }
         
         private void createField() {
+            int[] tempField = new int[rows*cols];
             for(int i = 0; i<mines; i++) {
-                field[i] = 1;
+                tempField[i] = 1;
             }
 
-            List<Integer> fieldList = Arrays.asList(field);
+            List<Integer> fieldList = Arrays.asList(tempField);
             Collections.shuffle(fieldList);
-            field = fieldList.toArray(new int[0]);
+            tempField = fieldList.toArray(new int[0]);
+
+            //turn into 2d array
+            field = [rows][cols];
+            for(int i=0; i<tempField.length; i++) {
+                int row = i / cols;
+                int col = i % rows;
+                field[row][col] = tempField[i];
+            }
 
             System.out.println(Arrays.toString(field));
         }
 
-        private int countNearbyBombs(int index) {
+        private int countNearbyBombs(int row, int col) {
+            if(field[row][col] == 1) {
+                return 0;
+            }
             int count = 0;
-            if(field[i]dex) == 0
- {
-                return count;
-            }            //check if surrounding tile is on  boardrd 
+
+            //check surrounding tile is on the board AND is a bomb
+            if(col-1 > 0 && field[row][col-1] > 0) {
+                count += 1;
+            }
+            if(col+1 < cols+1 && field[row][col+1] > 0) {
+                count += 1;
+            }
+
+            if(row-1 > 0 && field[row-1][col] > 0) {
+                count += 1;
+            }
+            if(row+1 < rows+1 && field[row+1][col] > 0) {
+                count += 1;
+            }
+            
+            return count;
         }
     }
 
