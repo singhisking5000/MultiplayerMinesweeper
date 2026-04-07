@@ -1,13 +1,15 @@
 import java.net.Socket;
 import java.sql.Connection;
 import java.net.ServerSocket;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Server
 {
     public static final int LISTENING_PORT = 9876;
     //GameLogic logic = new GameLogic();
-    Tile[][] board;
+    //Tile[][] board;
     // enum Tile
     // {
     //     BOMB,
@@ -15,14 +17,10 @@ public class Server
     // }
 
 
-    private void createBoard()
-    {
-        
-    }
-    public Tile[][] getBoard()
-    {
-        return board;
-    }
+    // public Tile[][] getBoard()
+    // {
+    //     return board;
+    // }
     
     private class GameLogic
     {
@@ -30,7 +28,7 @@ public class Server
         private int rows = 9;
         private int cols = 9;
 
-        private int[][] field = new int[rows][cols];
+        public int[][] field = new int[rows][cols];
         
         // enum Tile {
         //     SAFE,
@@ -43,12 +41,10 @@ public class Server
                 tempField[i] = 1;
             }
 
-            List<Integer> fieldList = Arrays.asList(tempField);
-            Collections.shuffle(fieldList);
-            tempField = fieldList.toArray(new int[0]);
+            Collections.shuffle(Arrays.asList(tempField));
 
             //turn into 2d array
-            field = [rows][cols];
+            int[][] field = new int[rows][cols];
             for(int i=0; i<tempField.length; i++) {
                 int row = i / cols;
                 int col = i % rows;
@@ -66,17 +62,32 @@ public class Server
 
             //check surrounding tile is on the board AND is a bomb
             if(col-1 > 0 && field[row][col-1] > 0) {
-                count += 1;
+                count++;
             }
             if(col+1 < cols+1 && field[row][col+1] > 0) {
-                count += 1;
+                count++;
             }
 
             if(row-1 > 0 && field[row-1][col] > 0) {
-                count += 1;
+                count++;
             }
             if(row+1 < rows+1 && field[row+1][col] > 0) {
-                count += 1;
+                count++;
+            }
+
+            //diagonals
+            if(col-1 >0 && row-1 >0 && field[row-1][col-1] >0) {
+                count++;
+            }
+            if(col+1 >0 && row-1 >0 && field[row-1][col+1] >0) {
+                count++;
+            }
+
+            if(col+1 >0 && row-1 >0 && field[row-1][col+1] >0) {
+                count++;
+            }
+            if(col+1 >0 && row+1 >0 && field[row+1][col+1] >0) {
+                count++;
             }
             
             return count;
