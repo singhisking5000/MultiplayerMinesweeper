@@ -79,14 +79,14 @@ public class Server
             if(col-1 >0 && row-1 >0 && field[row-1][col-1] >0) {
                 count++;
             }
-            if(col+1 >0 && row-1 >0 && field[row-1][col+1] >0) {
+            if(col+1 < cols+1 && row-1 >0 && field[row-1][col+1] >0) {
                 count++;
             }
 
-            if(col+1 >0 && row-1 >0 && field[row-1][col+1] >0) {
+            if(col-1 >0 && row+1 < rows+1 && field[row+1][col-1] >0) {
                 count++;
             }
-            if(col+1 >0 && row+1 >0 && field[row+1][col+1] >0) {
+            if(col+1 < cols+1 && row+1 < rows+1 && field[row+1][col+1] >0) {
                 count++;
             }
             
