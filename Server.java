@@ -1,6 +1,9 @@
 import java.net.Socket;
 import java.sql.Connection;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,15 +31,13 @@ public class Server
         private int rows = 9;
         private int cols = 9;
 
-        public int[][] field = new int[rows][cols];
+        public int[][] field = createField();
         
-        // enum Tile {
-        //     SAFE,
-        //     BOMB
-        // }
         
-        private void createField() {
+        private int[][] createField() {
             int[] tempField = new int[rows*cols];
+            int[][] newField = new int[rows][cols];
+
             for(int i = 0; i<mines; i++) {
                 tempField[i] = 1;
             }
@@ -44,14 +45,15 @@ public class Server
             Collections.shuffle(Arrays.asList(tempField));
 
             //turn into 2d array
-            int[][] field = new int[rows][cols];
+            int[][] newField = new int[rows][cols];
             for(int i=0; i<tempField.length; i++) {
                 int row = i / cols;
                 int col = i % rows;
-                field[row][col] = tempField[i];
+                newField[row][col] = tempField[i];
             }
 
-            System.out.println(Arrays.toString(field));
+            System.out.println(Arrays.toString(newField));
+            return newField;
         }
 
         private int countNearbyBombs(int row, int col) {
@@ -96,7 +98,7 @@ public class Server
 
     private class ConnectionHandler extends Thread
     {
-        private static ArrayList<ConnectionHandler> handlers;
+        private /* static */ ArrayList<ConnectionHandler> handlers;
         Socket socket;
         ObjectInputStream in;
         ObjectOutputStream out;
@@ -112,8 +114,8 @@ public class Server
             
             //Attempt to connect in and out streams
             try {
-                in = socket.getInputStream();
-                out = socket.getOutputStream();
+                in = (ObjectInputStream) socket.getInputStream();
+                out = (ObjectOutputStream) socket.getOutputStream();
             } catch (Exception e) {
                 e.printStackTrace();
             }
