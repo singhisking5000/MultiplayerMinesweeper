@@ -2,6 +2,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,9 +15,7 @@ public class Client
     private static JPanel board;
     private static int[][] field;
     private static int rows = 9;
-    private static int cols = 0;
-
-    private static int length;
+    private static int cols = 9;
 
     public static void main(String[] args)
     {
@@ -29,21 +29,35 @@ public class Client
         top = new JLabel();
         bottom = new JLabel();
         board = new JPanel();
-        length = 50;
         f.setLayout(new BorderLayout());
-        board.setLayout(new GridLayout(length, length));
+        board.setLayout(new GridBagLayout(rows, cols));
         f.add(top, BorderLayout.NORTH);
         f.add(board, BorderLayout.CENTER);
         f.add(bottom, BorderLayout.SOUTH);
 
+        // for later use
+        GridBagConstraints c = new GridBagConstraints();
+
         // Now set up the board
-        // int[][] tiles = createField(rows,cols,10);
+        int[][] tiles = createField(rows,cols,10);
 
-        // for(int x = 0; x < tiles.length; x++){
-        //     for(int y = 0; y < tiles[x].length; x++){
-
-        //     }
-        // }
+        for(int x = 0; x < tiles.length; x++){
+            for(int y = 0; y < tiles[x].length; x++){
+                ImageIcon img = new ImageIcon(ImageIO.read(new File("BlankTile.png")));
+                if (tiles[x][y] == 1) // if its a bomb
+                {
+                    img = new ImageIcon(ImageIO.read(new File("Bomb.png")));
+                    board.add(img);
+                } else  if (tiles[x][y] == 0) // If it was a discovered spot and not a bomb (2)
+                {
+                    switch (countNearbyBombs(tile[x][y]))
+                    {
+                        case 0:
+                            // do nothing and continmue this one HEREEEEEEEEE
+                    }
+                }
+            }
+        }
     }
 
     private static int[][] createField(int r, int c, int m) {
@@ -64,7 +78,7 @@ public class Client
         return f;
     }
 
-    private int countNearbyBombs(int row, int col) {
+    public int countNearbyBombs(int row, int col) {
         if(field[row][col] == 1) {
             return 0;
         }

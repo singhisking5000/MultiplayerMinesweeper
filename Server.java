@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+//okay time to write 2 lines of comments and stop for the day
 public class Server
 {
     public static final int LISTENING_PORT = 9876;
@@ -31,8 +31,11 @@ public class Server
         private int rows = 9;
         private int cols = 9;
 
-        public int[][] field = createField();
+        private int[][] field = createField();
         
+        public int[][] getField() {
+            return field;
+        }
         
         private int[][] createField() {
             int[] tempField = new int[rows*cols];
@@ -93,6 +96,31 @@ public class Server
             }
             
             return count;
+        }
+
+
+        //0 is safe
+        //1 is bomb
+        //2 is cleared
+        //jamshed wanted this over enums so thats on him
+        public void clearSafeTile(int row, int col) {
+            if(field[row][col] == null || field[row][col] == 2) {
+                return;
+            }
+
+            field[row][col] = 2;
+            if( countNearbyBombs(row, col) == 0 ) {
+                clearSafeTile(row-1, col-1);
+                clearSafeTile(row-1, col);
+                clearSafeTile(row-1, col+1);
+
+                clearSafeTile(row, col-1);
+                clearSafeTile(row, col+1);
+
+                clearSafeTile(row+1, col-1);
+                clearSafeTile(row+1, col);
+                clearSafeTile(row+1, col+1);
+            }
         }
     }
 
