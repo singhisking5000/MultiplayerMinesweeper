@@ -40,7 +40,7 @@ public class Client
 
         // Now set up the board
         int[][] tiles = createField(rows,cols,10);
-
+        //lol your code here looks so messy
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; x++){
                 ImageIcon img = new ImageIcon(ImageIO.read(new File("BlankTile.png")));
@@ -54,6 +54,31 @@ public class Client
                     {
                         case 0:
                             // do nothing and continmue this one HEREEEEEEEEE
+                            break;
+                        case 1:
+                            img = new ImageIcon(ImageIO.read(new File("OneTile.png")));
+                            break;
+                        case 2:
+                            img = new ImageIcon(ImageIO.read(new File("TwoTile.png")));
+                            break;
+                        case 3:
+                            img = new ImageIcon(ImageIO.read(new File("ThreeTile.png")));
+                            break;
+                        case 4:
+                            img = new ImageIcon(ImageIO.read(new File("FourTile.png")));
+                            break;
+                        case 5:
+                            img = new ImageIcon(ImageIO.read(new File("FiveTile.png")));
+                            break;
+                        case 6:
+                            img = new ImageIcon(ImageIO.read(new File("SixTile.png")));
+                            break;
+                        case 7:
+                            img = new ImageIcon(ImageIO.read(new File("SevenTile.png")));
+                            break;
+                        case 8:
+                            img = new ImageIcon(ImageIO.read(new File("EightTile.png")));
+                            break;
                     }
                 }
             }

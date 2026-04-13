@@ -48,7 +48,6 @@ public class Server
             Collections.shuffle(Arrays.asList(tempField));
 
             //turn into 2d array
-            int[][] newField = new int[rows][cols];
             for(int i=0; i<tempField.length; i++) {
                 int row = i / cols;
                 int col = i % rows;
@@ -104,7 +103,13 @@ public class Server
         //2 is cleared
         //jamshed wanted this over enums so thats on him
         public void clearSafeTile(int row, int col) {
-            if(field[row][col] == null || field[row][col] == 2) {
+            if(row <= 0 || row > rows) {
+                return;
+            }
+            if(col <= 0 || col > cols) {
+                return;
+            }
+            if(field[row][col] == 2) {
                 return;
             }
 
@@ -121,6 +126,21 @@ public class Server
                 clearSafeTile(row+1, col);
                 clearSafeTile(row+1, col+1);
             }
+        }
+
+        //assuming that the click is actually on a tile
+        //tries to make the first time you click on the board a safe tile
+        public void clearFirstClick(int row, int col) {
+            if(field[row][col] == 0) {
+                return;
+            }
+            for(int i=0; i<cols; i++) {
+                if(field[0][i] == 0) {
+                    field[row][col] = 0;
+                    field[0][i] = 2;
+                }
+            }
+            
         }
     }
 
