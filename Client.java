@@ -98,7 +98,6 @@ public class Client
             e.printStackTrace();
         }
 
-        
         f.setVisible(true);
     }
     
